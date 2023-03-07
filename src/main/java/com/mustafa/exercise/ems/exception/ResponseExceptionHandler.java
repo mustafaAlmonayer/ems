@@ -23,14 +23,6 @@ public class ResponseExceptionHandler extends ResponseEntityExceptionHandler {
 		return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
 	}
 
-	@ExceptionHandler(ResourceNotFoundExceptionDelete.class)
-	public final ResponseEntity<ErrorDetails> handleResourceNotFoundExceptionDelete(Exception ex, WebRequest request)
-			throws Exception {
-		ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), ex.getMessage(),
-				request.getDescription(false));
-		return new ResponseEntity<>(errorDetails, HttpStatus.NO_CONTENT);
-	}
-
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
 			HttpHeaders headers, HttpStatusCode status, WebRequest request) {

@@ -6,30 +6,20 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-//import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.stereotype.Service;
 
-//import com.fasterxml.jackson.databind.ser.FilterProvider;
-//import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
-//import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.mustafa.exercise.ems.entity.Department;
-import com.mustafa.exercise.ems.entity.Employee;
 import com.mustafa.exercise.ems.exception.ResourceNotFoundExceptionGet;
 import com.mustafa.exercise.ems.repository.DepartmentRepository;
-import com.mustafa.exercise.ems.repository.EmployeeRepository;
 
 @Service("DepartmentService")
 public class DepartmentService {
 
 	@Autowired
 	DepartmentRepository departmentRepository;
-	@Autowired
-	EmployeeRepository employeeRepository;
 	
-
 	public ResponseEntity<List<Department>> getDepartments() {
 		List<Department> departmentList = departmentRepository.findAll();
-//		MappingJacksonValue mappingJacksonValue = applyFilter(departmentList, "name", "id", "employees");
 		return new ResponseEntity<>(departmentList, HttpStatus.OK);
 	}
 
@@ -39,7 +29,6 @@ public class DepartmentService {
 			throw new ResourceNotFoundExceptionGet("Department With ID: " + id + " Not Found");
 		}
 		Department responceDepartment = department.get();
-//        MappingJacksonValue mappingJacksonValue = applyFilter(responceDepartment, "name");
 		return new ResponseEntity<>(responceDepartment, HttpStatus.OK);
 	}
 
@@ -48,36 +37,23 @@ public class DepartmentService {
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
 		Department savedDepartment = departmentRepository.save(department);
-//        MappingJacksonValue mappingJacksonValue = applyFilter(savedDepartment, "name", "id");
 		return new ResponseEntity<>(savedDepartment, HttpStatus.CREATED);
 	}
-
-	public ResponseEntity<List<Employee>> getDepartmentEmployees(Long id) {
-		Optional<Department> department = departmentRepository.findById(id);
-		if (department.isEmpty()) {
-			throw new ResourceNotFoundExceptionGet("Department With ID: " + id + " NotFound");
-		}
-		return new ResponseEntity<>(department.get().getEmployees(), HttpStatus.OK);
+	
+	public ResponseEntity<Department> updateDepartment(Department department) {
+		if (!departmentRepository.existsById(department.getId())) {
+			throw new ResourceNotFoundExceptionGet("Department With ID: " + department.getId() + " Not Found");
+		};
+		departmentRepository.save(department);
+		return new ResponseEntity<Department>(department, HttpStatus.OK);
 	}
 
-	public ResponseEntity<Employee> getDepartmentEmployee(Long departmentID, Long EmployeeId) {
-		Optional<Department> department = departmentRepository.findById(departmentID);
-		if (department.isEmpty()) {
-			throw new ResourceNotFoundExceptionGet("Department With ID: " + departmentID + " NotFound");
+	public ResponseEntity<Void> deleteDepartment(Long id) {
+		if (!departmentRepository.existsById(id)) {
+			throw new ResourceNotFoundExceptionGet("Department With ID: " + id + " Not Found");
 		}
-		Optional<Employee> employee = employeeRepository.findByIdAndDepartment(EmployeeId, department.get());
-		if (employee.isEmpty()) {
-			throw new ResourceNotFoundExceptionGet("Employee With ID: " + EmployeeId + " NotFound");
-		}
-		return new ResponseEntity<>(employee.get(), HttpStatus.OK);
+		departmentRepository.deleteById(id);
+		return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
 	}
-
-//	private MappingJacksonValue applyFilter(Object object, String...wantedFields ) {
-//		SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.filterOutAllExcept(wantedFields);
-//		FilterProvider filters = new SimpleFilterProvider().addFilter("DepartmentFilter", filter);
-//		MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(object);
-//		mappingJacksonValue.setFilters(filters);
-//		return mappingJacksonValue;
-//	}
 
 }

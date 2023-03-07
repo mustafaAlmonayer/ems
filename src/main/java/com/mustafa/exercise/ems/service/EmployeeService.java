@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import com.mustafa.exercise.ems.entity.Department;
 import com.mustafa.exercise.ems.entity.Employee;
 import com.mustafa.exercise.ems.exception.ResourceNotFoundExceptionGet;
-import com.mustafa.exercise.ems.exception.ResourceNotFoundExceptionDelete;
 import com.mustafa.exercise.ems.repository.DepartmentRepository;
 import com.mustafa.exercise.ems.repository.EmployeeRepository;
 
@@ -27,34 +26,56 @@ public class EmployeeService {
 		List<Employee> employeeList = employeeRepository.findAll();
 		return new ResponseEntity<>(employeeList, HttpStatus.OK);
 	}
-
-	public ResponseEntity<Employee> getEmployee(Long id) {
-		Optional<Employee> employee = employeeRepository.findById(id);
+	
+	public ResponseEntity<List<Employee>> getEmployees(Long departmentId) {
+		List<Employee> employeeList = employeeRepository.findAllByDepartmentId(departmentId);
+		return new ResponseEntity<>(employeeList, HttpStatus.OK);
+	}
+	
+	public ResponseEntity<Employee> getEmployee(Long employeeId) {
+		Optional<Employee> employee = employeeRepository.findById(employeeId);
 		if (employee.isEmpty()) {
-			throw new ResourceNotFoundExceptionGet("Employee Not Found ID: " + id);
+			throw new ResourceNotFoundExceptionGet("Employee Not Found ID: " + employeeId);
+		}
+		return new ResponseEntity<>(employee.get(), HttpStatus.OK);
+	}
+
+	public ResponseEntity<Employee> getEmployee(Long employeeId, Long departmentId) {
+		Optional<Employee> employee = employeeRepository.findByIdAndDepartmentId(employeeId, departmentId);
+		if (employee.isEmpty()) {
+			throw new ResourceNotFoundExceptionGet("Employee Not Found ID: " + employeeId);
 		}
 		return new ResponseEntity<>(employee.get(), HttpStatus.OK);
 	}
 
 	public ResponseEntity<Employee> saveEmployee(Employee employee) {
-		Department department;
+		 
 		if (!departmentRepository.existsByName(employee.getDepartment().getName())) {
-			department = departmentRepository.save(employee.getDepartment());
+			departmentRepository.save(employee.getDepartment());
 		} else {
-			department = departmentRepository.findByName(employee.getDepartment().getName());
-			employee.setDepartment(department);
+			Optional<Department> department = departmentRepository.findByName(employee.getDepartment().getName());
+			employee.setDepartment(department.get());
 		}
 		employeeRepository.save(employee);
 		return new ResponseEntity<>(employee, HttpStatus.CREATED);
+	}
+	
+	public ResponseEntity<Employee> updateEmployee(Employee employee) {
+		if (!employeeRepository.existsById(employee.getId())) {
+			throw new ResourceNotFoundExceptionGet("Employee Not Found ID: " + employee.getId());
+		}
+		employeeRepository.save(employee);
+		return new ResponseEntity<Employee>(employee, HttpStatus.OK);
+		
 	}
 
 	public ResponseEntity<Employee> deleteEmployee(Long id) {
 		Optional<Employee> employee = employeeRepository.findById(id);
 		if (employee.isEmpty()) {
-			throw new ResourceNotFoundExceptionDelete("Employee Not Found ID: " + id);
+			throw new ResourceNotFoundExceptionGet("Employee Not Found ID: " + id);
 		}
 		employeeRepository.delete(employee.get());
-		return new ResponseEntity<>(null, HttpStatus.ACCEPTED);
+		return new ResponseEntity<>(null, HttpStatus.OK);
 	}
 
 }

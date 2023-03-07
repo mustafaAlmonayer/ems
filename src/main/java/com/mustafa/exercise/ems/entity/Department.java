@@ -3,7 +3,6 @@ package com.mustafa.exercise.ems.entity;
 import java.util.List;
 import java.util.Objects;
 
-//import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
@@ -20,7 +19,6 @@ import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "department")
-//@JsonFilter("DepartmentFilter")
 public class Department {
 
 	@Id
@@ -36,14 +34,18 @@ public class Department {
 	@JsonIgnore
 	@OneToMany(mappedBy = "department", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Employee> employees;
+	
+	private Long managerId;
 
 	public Department() {
 	}
-
-	public Department(Long id, String name, List<Employee> employees) {
+	
+	public Department(Long id, String name,List<Employee> employees, Long managerId) {
+		super();
 		this.id = id;
 		this.name = name;
 		this.employees = employees;
+		this.managerId = managerId;
 	}
 
 	public Long getId() {
@@ -69,30 +71,39 @@ public class Department {
 	public void setEmployees(List<Employee> employees) {
 		this.employees = employees;
 	}
+	
+
+	public Long getManagerId() {
+		return managerId;
+	}
+
+	public void setManagerId(Long managerId) {
+		this.managerId = managerId;
+	}
+	
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + Objects.hash(id, name);
-		return result;
+		return Objects.hash(id, managerId, name);
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (!super.equals(obj))
+		if (obj == null)
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
 		Department other = (Department) obj;
-		return Objects.equals(employees, other.employees) && Objects.equals(id, other.id)
+		return Objects.equals(id, other.id) && Objects.equals(managerId, other.managerId)
 				&& Objects.equals(name, other.name);
 	}
 
 	@Override
 	public String toString() {
-		return "Department{" + "id=" + id + ", name='" + name + '\'' + ", employees=" + employees + '}';
+		return "Department [id=" + id + ", name=" + name + ", employees=" + employees + ", managerId=" + managerId
+				+ "]";
 	}
+	
 }
