@@ -42,6 +42,11 @@ public class EmployeeController {
 	public ResponseEntity<Employee> saveEmployee(@Valid @RequestBody Employee employee) {
 		return employeeService.saveEmployee(employee);
 	}
+	
+	@PutMapping("/employee/update")
+	public ResponseEntity<Employee> updateEmployee(@Valid @RequestBody Employee employee) {
+		return employeeService.updateEmployee(employee);
+	}
 
 	@DeleteMapping("/employee/{id}/delete")
 	public ResponseEntity<Employee> deleteEmployee(@PathVariable Long id) {
