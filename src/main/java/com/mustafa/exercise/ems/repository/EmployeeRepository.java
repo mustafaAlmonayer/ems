@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.mustafa.exercise.ems.entity.Employee;
@@ -11,6 +12,9 @@ import com.mustafa.exercise.ems.entity.Employee;
 
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
+	
+	// TODO: add query
+	@Query()
 	Optional<Employee> findByIdAndDepartmentId(Long emmployeeId, Long departmentId);
 	List<Employee> findAllByDepartmentId(Long departmentId);
 }

@@ -18,6 +18,7 @@ public class DepartmentService {
 	@Autowired
 	DepartmentRepository departmentRepository;
 	
+	//TODO: move ResponseEntity to controller  
 	public ResponseEntity<List<Department>> getDepartments() {
 		List<Department> departmentList = departmentRepository.findAll();
 		return new ResponseEntity<>(departmentList, HttpStatus.OK);
@@ -53,7 +54,7 @@ public class DepartmentService {
 			throw new ResourceNotFoundExceptionGet("Department With ID: " + id + " Not Found");
 		}
 		departmentRepository.deleteById(id);
-		return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 }

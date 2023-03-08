@@ -64,8 +64,7 @@ public class EmployeeService {
 		if (!employeeRepository.existsById(employee.getId())) {
 			throw new ResourceNotFoundExceptionGet("Employee Not Found ID: " + employee.getId());
 		}
-		employeeRepository.save(employee);
-		return new ResponseEntity<Employee>(employee, HttpStatus.OK);
+		return new ResponseEntity<Employee>(employeeRepository.save(employee), HttpStatus.OK);
 		
 	}
 
