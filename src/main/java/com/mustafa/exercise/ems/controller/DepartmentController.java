@@ -3,6 +3,7 @@ package com.mustafa.exercise.ems.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,28 +28,29 @@ public class DepartmentController {
 
 	@GetMapping("/all")
 	public ResponseEntity<List<Department>> getAllDepartments() {
-		return departmentService.getDepartments();
+		return new ResponseEntity<>(departmentService.getDepartments(), HttpStatus.OK);
 	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<Department> getDepartment(@PathVariable Long id) {
-		return departmentService.getDepartment(id);
+		return new ResponseEntity<>(departmentService.getDepartment(id), HttpStatus.OK);
 	}
 
 	@PostMapping("/save")
 	public ResponseEntity<Department> saveDepartment(@Valid @RequestBody Department department) {
-		return departmentService.saveDepartment(department);
+		return new ResponseEntity<>(departmentService.saveDepartment(department), HttpStatus.CREATED);
 	}
-	
+
 	@PutMapping("/update")
 	public ResponseEntity<Department> updateDepartment(@Valid @RequestBody Department department) {
-		return departmentService.updateDepartment(department);
-		
+		return new ResponseEntity<>(departmentService.updateDepartment(department), HttpStatus.OK);
+
 	}
-	
+
 	@DeleteMapping("/{id}/delete")
 	public ResponseEntity<Void> deleteDepartment(@PathVariable Long id) {
-		return departmentService.deleteDepartment(id);
+		departmentService.deleteDepartment(id);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 }

@@ -2,6 +2,7 @@ package com.mustafa.exercise.ems.entity;
 
 import java.util.Objects;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -29,7 +30,7 @@ public class Employee {
 	@Size(min = 3, max = 36, message = "size should be more than 2 and less than 35")
 	private String lastName;
 
-	@ManyToOne
+	@ManyToOne(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
 	@JoinColumn(name = "department_id")
 	private Department department;
 
@@ -101,4 +102,5 @@ public class Employee {
 		return "Employee{" + "id=" + id + ", firstName='" + firstName + '\'' + ", lastName='" + lastName + '\''
 				+ ", department=" + department.getId() + '}';
 	}
+	
 }

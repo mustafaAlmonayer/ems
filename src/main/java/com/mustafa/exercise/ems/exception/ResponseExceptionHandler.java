@@ -15,12 +15,20 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class ResponseExceptionHandler extends ResponseEntityExceptionHandler {
 
-	@ExceptionHandler(ResourceNotFoundExceptionGet.class)
+	@ExceptionHandler(ResourceNotFoundException.class)
 	public final ResponseEntity<ErrorDetails> handleResourceNotFoundExceptionGet(Exception ex, WebRequest request)
 			throws Exception {
 		ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), ex.getMessage(),
 				request.getDescription(false));
 		return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+	}
+
+	@ExceptionHandler(ResourceExistsException.class)
+	public final ResponseEntity<ErrorDetails> handleResourceExistsException(Exception ex, WebRequest request)
+			throws Exception {
+		ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), ex.getMessage(),
+				request.getDescription(false));
+		return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
 	}
 
 	@Override

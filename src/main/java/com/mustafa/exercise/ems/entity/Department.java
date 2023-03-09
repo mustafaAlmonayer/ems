@@ -32,16 +32,16 @@ public class Department {
 	private String name;
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "department", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "department", fetch = FetchType.LAZY, cascade = { CascadeType.DETACH, CascadeType.MERGE,
+			CascadeType.PERSIST, CascadeType.REFRESH })
 	private List<Employee> employees;
-	
-	
+
 	private Long managerId;
 
 	public Department() {
 	}
-	
-	public Department(Long id, String name,List<Employee> employees, Long managerId) {
+
+	public Department(Long id, String name, List<Employee> employees, Long managerId) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -72,7 +72,6 @@ public class Department {
 	public void setEmployees(List<Employee> employees) {
 		this.employees = employees;
 	}
-	
 
 	public Long getManagerId() {
 		return managerId;
@@ -81,7 +80,6 @@ public class Department {
 	public void setManagerId(Long managerId) {
 		this.managerId = managerId;
 	}
-	
 
 	@Override
 	public int hashCode() {
@@ -106,5 +104,5 @@ public class Department {
 		return "Department [id=" + id + ", name=" + name + ", employees=" + employees + ", managerId=" + managerId
 				+ "]";
 	}
-	
+
 }

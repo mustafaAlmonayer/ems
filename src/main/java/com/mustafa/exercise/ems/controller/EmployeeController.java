@@ -6,6 +6,7 @@ import com.mustafa.exercise.ems.service.EmployeeService;
 import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,38 +20,39 @@ public class EmployeeController {
 
 	@GetMapping("/employee/all")
 	public ResponseEntity<List<Employee>> getAllEmployees() {
-		return employeeService.getEmployees();
+		return new ResponseEntity<>(employeeService.getEmployees(), HttpStatus.OK);
 	}
 	
 	@GetMapping("/department/{id}/employee/all")
 	public ResponseEntity<List<Employee>> getAllEmployeesByDepartment(@PathVariable Long id) {
-		return employeeService.getEmployees(id);
+		return new ResponseEntity<>(employeeService.getEmployees(id), HttpStatus.OK);
 	}
 	
 	@GetMapping("/employee/{id}")
 	public ResponseEntity<Employee> getEmployee(@PathVariable Long id) {
-		return employeeService.getEmployee(id);
+		return new ResponseEntity<>(employeeService.getEmployee(id), HttpStatus.OK);
 	}
 	
 
 	@GetMapping("/department/{departmentId}/employee/{employeeId}")
 	public ResponseEntity<Employee> getEmployeeByDepartment(@PathVariable Long departmentId, @PathVariable Long employeeId) {
-		return employeeService.getEmployee(employeeId, departmentId);
+		return new ResponseEntity<>(employeeService.getEmployee(employeeId, departmentId), HttpStatus.OK);
 	}
 
 	@PostMapping("/employee/save")
 	public ResponseEntity<Employee> saveEmployee(@Valid @RequestBody Employee employee) {
-		return employeeService.saveEmployee(employee);
+		return new ResponseEntity<>(employeeService.saveEmployee(employee), HttpStatus.OK);
 	}
 	
 	@PutMapping("/employee/update")
 	public ResponseEntity<Employee> updateEmployee(@Valid @RequestBody Employee employee) {
-		return employeeService.updateEmployee(employee);
+		return new ResponseEntity<>(employeeService.updateEmployee(employee), HttpStatus.OK);
 	}
 
 	@DeleteMapping("/employee/{id}/delete")
 	public ResponseEntity<Employee> deleteEmployee(@PathVariable Long id) {
-		return employeeService.deleteEmployee(id);
+		employeeService.deleteEmployee(id);
+		return new ResponseEntity<>( HttpStatus.OK);
 	}
 
 }

@@ -1,10 +1,10 @@
 package com.mustafa.exercise.ems.exception;
 
-public class ResourceNotFoundExceptionGet extends RuntimeException {
+public class ResourceNotFoundException extends RuntimeException {
 
 	private static final long serialVersionUID = -5396888588608632428L;
 
-	public ResourceNotFoundExceptionGet(String message) {
+	public ResourceNotFoundException(String message) {
 		super(message);
 	}
 
