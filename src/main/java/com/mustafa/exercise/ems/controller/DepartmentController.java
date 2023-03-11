@@ -20,7 +20,7 @@ import com.mustafa.exercise.ems.service.DepartmentService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/department")
+@RequestMapping("/departments")
 public class DepartmentController {
 
 	@Autowired

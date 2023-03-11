@@ -18,38 +18,38 @@ public class EmployeeController {
 	@Autowired
 	EmployeeService employeeService;
 
-	@GetMapping("/employee/all")
+	@GetMapping("/employees/all")
 	public ResponseEntity<List<Employee>> getAllEmployees() {
 		return new ResponseEntity<>(employeeService.getEmployees(), HttpStatus.OK);
 	}
 	
-	@GetMapping("/department/{id}/employee/all")
+	@GetMapping("/departments/{id}/employees/all")
 	public ResponseEntity<List<Employee>> getAllEmployeesByDepartment(@PathVariable Long id) {
 		return new ResponseEntity<>(employeeService.getEmployees(id), HttpStatus.OK);
 	}
 	
-	@GetMapping("/employee/{id}")
+	@GetMapping("/employees/{id}")
 	public ResponseEntity<Employee> getEmployee(@PathVariable Long id) {
 		return new ResponseEntity<>(employeeService.getEmployee(id), HttpStatus.OK);
 	}
 	
 
-	@GetMapping("/department/{departmentId}/employee/{employeeId}")
+	@GetMapping("/departments/{departmentId}/employees/{employeeId}")
 	public ResponseEntity<Employee> getEmployeeByDepartment(@PathVariable Long departmentId, @PathVariable Long employeeId) {
 		return new ResponseEntity<>(employeeService.getEmployee(employeeId, departmentId), HttpStatus.OK);
 	}
 
-	@PostMapping("/employee/save")
+	@PostMapping("/employees/save")
 	public ResponseEntity<Employee> saveEmployee(@Valid @RequestBody Employee employee) {
 		return new ResponseEntity<>(employeeService.saveEmployee(employee), HttpStatus.OK);
 	}
 	
-	@PutMapping("/employee/update")
+	@PutMapping("/employees/update")
 	public ResponseEntity<Employee> updateEmployee(@Valid @RequestBody Employee employee) {
 		return new ResponseEntity<>(employeeService.updateEmployee(employee), HttpStatus.OK);
 	}
 
-	@DeleteMapping("/employee/{id}/delete")
+	@DeleteMapping("/employees/{id}/delete")
 	public ResponseEntity<Employee> deleteEmployee(@PathVariable Long id) {
 		employeeService.deleteEmployee(id);
 		return new ResponseEntity<>( HttpStatus.OK);
