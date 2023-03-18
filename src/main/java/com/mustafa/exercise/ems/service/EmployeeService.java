@@ -41,14 +41,17 @@ public class EmployeeService {
 	}
 
 	public Employee saveEmployee(Employee employee) {
-		if (departmentRepository.existsByName(employee.getDepartment().getName())) {
-			Optional<Department> department = departmentRepository.findByName(employee.getDepartment().getName());
-			employee.setDepartment(department.get());
+		if (employee.getDepartment() != null) {
+			if (departmentRepository.existsByName(employee.getDepartment().getName())) {
+				Optional<Department> department = departmentRepository.findByName(employee.getDepartment().getName());
+				employee.setDepartment(department.get());
+			}
 		}
 		return employeeRepository.save(employee);
 	}
 
 	public Employee updateEmployee(Employee employee) {
+		System.out.println(employee);
 		if (!employeeRepository.existsById(employee.getId()))
 			throw new ResourceNotFoundException("Employee Not Found ID: " + employee.getId());
 		return employeeRepository.save(employee);
@@ -58,6 +61,8 @@ public class EmployeeService {
 		Optional<Employee> employee = employeeRepository.findById(id);
 		if (employee.isEmpty())
 			throw new ResourceNotFoundException("Employee Not Found ID: " + id);
+		Employee dbEmployee =employee.get();
+		employee.get().setDepartment(null);
 		employeeRepository.delete(employee.get());
 	}
 

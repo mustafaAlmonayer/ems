@@ -30,7 +30,7 @@ public class Employee {
 	@Size(min = 3, max = 36, message = "size should be more than 2 and less than 35")
 	private String lastName;
 
-	@ManyToOne(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+	@ManyToOne(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH })
 	@JoinColumn(name = "department_id")
 	private Department department;
 

@@ -35,6 +35,11 @@ public class DepartmentController {
 	public ResponseEntity<Department> getDepartment(@PathVariable Long id) {
 		return new ResponseEntity<>(departmentService.getDepartment(id), HttpStatus.OK);
 	}
+	
+	@GetMapping("/name/{name}")
+	public ResponseEntity<Department> getDepartment(@PathVariable String name) {
+		return new ResponseEntity<>(departmentService.getDepartment(name), HttpStatus.OK);
+	}
 
 	@PostMapping("/save")
 	public ResponseEntity<Department> saveDepartment(@Valid @RequestBody Department department) {

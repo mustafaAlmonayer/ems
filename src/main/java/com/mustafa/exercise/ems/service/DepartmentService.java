@@ -25,6 +25,11 @@ public class DepartmentService {
 		Optional<Department> department = departmentRepository.findById(id);
 		return department.orElseThrow(() -> new ResourceNotFoundException("Department With ID: " + id + " Not Found"));
 	}
+	
+	public Department getDepartment(String name) {
+		Optional<Department> department = departmentRepository.findByName(name);
+		return department.orElseThrow(() -> new ResourceNotFoundException("Department With Name: " + name + " Not Found"));
+	}
 
 	public Department saveDepartment(Department department) {
 		if (departmentRepository.existsByName(department.getName()))
